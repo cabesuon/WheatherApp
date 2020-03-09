@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col">
+    <div class="row">
+      <div class="col">
+        <div class="mat-h1 border-bottom border-dark">Current Weather</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-6">
+        <app-current-weather [params]="currentWeatherParams">
+        </app-current-weather>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <app-map [coords]="coords"></app-map>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div class="mat-h1 border-bottom border-dark mt-4">5-Day Weather Forecast</div>
+    <app-five-day-weather-forecast [params]="fiveDayWeatherForecastParams">
+    </app-five-day-weather-forecast>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+<mat-table [dataSource]="_params.dayWeatherForecast" class="weather-table mat-elevation-z8">
+
+  <!-- Time -->
+  <ng-container matColumnDef="time">
+    <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{element.date | date: 'shortTime'}}
+    </mat-cell>
+  </ng-container>
+
+  <!-- Condition -->
+  <ng-container matColumnDef="condition">
+    <mat-header-cell *matHeaderCellDef> Condition </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <img src="{{element.icon}}"> {{element.description}}
+    </mat-cell>
+  </ng-container>
+
+  <!-- Feels Like -->
+  <ng-container matColumnDef="feelsLike">
+    <mat-header-cell *matHeaderCellDef> Feels Like </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{formatTemp(element.feelsLikeC, element.feelsLikeF)}}&deg;
+    </mat-cell>
+  </ng-container>
+
+  <!-- Precip -->
+  <ng-container matColumnDef="precip">
+    <mat-header-cell *matHeaderCellDef> Precip </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{element.rainChance}}%
+    </mat-cell>
+  </ng-container>
+
+  <!-- Amount -->
+  <ng-container matColumnDef="amount">
+    <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{element.rain3h}}mm
+    </mat-cell>
+  </ng-container>
+
+  <!-- Humidity -->
+  <ng-container matColumnDef="humidity">
+    <mat-header-cell *matHeaderCellDef> Humidity </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{element.humidity}}&deg;
+    </mat-cell>
+  </ng-container>
+
+  <!-- Wind -->
+  <ng-container matColumnDef="wind">
+    <mat-header-cell *matHeaderCellDef> Wind </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{element.windSpeed}}km/h {{element.windDeg}}&deg;
+    </mat-cell>
+  </ng-container>
+
+  <!-- Pressure -->
+  <ng-container matColumnDef="pressure">
+    <mat-header-cell *matHeaderCellDef> Pressure </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{element.pressure}}hPa
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

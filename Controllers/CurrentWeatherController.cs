@@ -30,7 +30,7 @@ namespace weather_app.Controllers
             var coord = new Coordinates();
             coord.Lon = lon;
             coord.Lat = lat;
-            return this._owmApi.GetCurrentWeather(coord).ToArray();
+            return this._owmApi.GetCurrentWeather(coord);
         }
     }
 }

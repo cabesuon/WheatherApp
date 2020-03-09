@@ -1,0 +1,37 @@
+<div class="col">
+  <!-- city name -->
+  <div class="row">
+    <p class="mat-h2">
+      {{place}} <span class="text-secondary">{{date | date:'medium'}}</span>
+    </p>
+  </div>
+  <!-- weather -->
+  <div class="row">
+    <!-- feels like -->
+    <div class="col">
+      <div class="border border-info rounded">
+        <div class="text-center">
+          <span class="mat-display-4 text-info">{{temp}}&deg;</span><br>
+          <span class="mat-h2">
+            {{max}}&deg; <span class="text-secondary">| {{min}}&deg;</span>
+          </span><br>
+          <span class="mat-h3"><img src="{{icon}}" alt="-"> {{description}}</span>
+        </div>
+      </div>
+    </div>
+    <!-- wind, pressure, rain3h -->
+    <div class="col">
+      <mat-list>
+        <mat-list-item>
+          <p>Hummidity: <span class="font-weight-bold">{{hummidity}}</span>%</p>
+        </mat-list-item>
+        <mat-list-item>
+          <p>Wind: <span class="font-weight-bold">{{windSpeed}}</span>km/h, <span class="font-weight-bold">{{windDeg}}</span>&deg;</p>
+        </mat-list-item>
+        <mat-list-item>
+          <p>Precipitation: <span class="font-weight-bold">{{rainChance}}</span>%</p>
+        </mat-list-item>
+       </mat-list>
+    </div>
+  </div>
+</div>

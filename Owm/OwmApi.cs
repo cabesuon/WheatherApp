@@ -7,8 +7,6 @@ using weather_app.models;
 
 namespace weather_app.owm
 {
-    
-
     public class OwmApi
     {
         public string Key { get; set; }
@@ -24,7 +22,7 @@ namespace weather_app.owm
                 return currentWeather;
             }
 
-            var baseUrl = "api.openweathermap.org";
+            var baseUrl = "https://api.openweathermap.org";
             var url = "data/2.5/weather?" +
             $"lat={coord.Lat}&lon={coord.Lon}&appid={this.Key}";
             using (var client = new HttpClient())
@@ -53,7 +51,7 @@ namespace weather_app.owm
                 return weatherForecast;
             }
 
-            var baseUrl = "http://api.openweathermap.org";
+            var baseUrl = "https://api.openweathermap.org";
             var url = "data/2.5/forecast?" +
             $"lat={coord.Lat}&lon={coord.Lon}&appid={this.Key}";
 
@@ -72,6 +70,7 @@ namespace weather_app.owm
                     weatherForecast = new List<IDayWeather>();
                     foreach(var item in result.List)
                     {
+                        item.CityName = result.City.Name;
                         weatherForecast.Add(item);
                     }
                 }
@@ -123,28 +122,6 @@ namespace weather_app.owm
     }
 
     [DataContract]
-    internal class OwmTemp
-    {
-        [DataMember(Name = "day")]
-        public double Day { get; set; }
-
-        [DataMember(Name = "min")]
-        public double Min { get; set; }
-
-        [DataMember(Name = "max")]
-        public double Max { get; set; }
-
-        [DataMember(Name = "night")]
-        public double Night { get; set; }
-
-        [DataMember(Name = "eve")]
-        public double Eve { get; set; }
-
-        [DataMember(Name = "morn")]
-        public double Morn { get; set; }
-    }
-
-    [DataContract]
     internal class OwmWeatherDescription
     {
         [DataMember(Name = "id")]
@@ -179,7 +156,7 @@ namespace weather_app.owm
         [DataMember(Name = "feels_like")]
         public double FeelsLike { get; set; }
 
-        [DataMember(Name = "preassure")]
+        [DataMember(Name = "pressure")]
         public double Pressure { get; set; }
 
         [DataMember(Name = "humidity")]
@@ -244,10 +221,10 @@ namespace weather_app.owm
         public string Country { get; set; }
 
         [DataMember(Name = "sunrise")]
-        public DateTime Sunrise { get; set; }
+        public double Sunrise { get; set; }
 
         [DataMember(Name = "sunset")]
-        public DateTime Sunset { get; set; }
+        public double Sunset { get; set; }
     }
 
     [DataContract]
@@ -276,19 +253,71 @@ namespace weather_app.owm
 
         // IDayWeather
 
+        public string CityName { get; set; }
+
         public DateTime Date { get { return OwmUtils.UnixTimeStampToDateTime(this.Dt); } }
 
-        public double TemperatureC { get { return this.Main.FeelsLike; } }
-
+        public string Icon {
+            get {
+                return
+                $"https://openweathermap.org/img/wn/{this.WeatherDescription[0].Icon}.png";
+            }
+        }
+        
         public string Description { get { return this.WeatherDescription[0].Description; } }
 
-        public string Icon { get { return this.WeatherDescription[0].Icon; } }
+        public double FeelsLikeC { get { return this.Main.FeelsLike - 273.15; } }
 
-        public double HumidityPercentage { get { return this.Main.Humidity; } }
+        public double TempMinC { get { return this.Main.TempMin - 273.15; } }
+
+        public double TempMaxC { get { return this.Main.TempMax - 273.15; } }
+
+        public double FeelsLikeF { get { return this.FeelsLikeC * 1.8 + 32.00; } }
+
+        public double TempMinF { get { return this.TempMinC * 1.8 + 32.00; } }
+
+        public double TempMaxF { get { return this.TempMaxC * 1.8 + 32.00; } }
+
+        public double Pressure { get { return this.Main.Pressure; } }
+
+        public double Humidity { get { return this.Main.Humidity; } }
 
         public double WindSpeed { get { return this.Wind.Speed; } }
 
-        public double Precipitation { get { return this.Rain != null ? this.Rain.Hour3 : 0; } }
+        public double WindDeg { get { return this.Wind.Deg; } }
+
+        public double Rain3h { get { return this.Rain != null ? this.Rain.Hour3 : 0; } }
+
+        public double RainChance {
+            get {
+                int humidityFactor = 0;
+                if (this.Main.Humidity > 90) {
+                    humidityFactor = 20;
+                } else if (this.Main.Humidity > 80) {
+                    humidityFactor = 15;
+                } else if (this.Main.Humidity > 70) {
+                    humidityFactor = 10;
+                } else if (this.Main.Humidity > 60) {
+                    humidityFactor = 5;
+                };
+                switch(this.WeatherDescription[0].Id) {
+                    case 500:
+                    case 520:
+                        return 20 + humidityFactor;
+                    case 501:
+                    case 521:
+                        return 60 + humidityFactor;
+                    case 502:
+                    case 522:
+                        return 80 + humidityFactor;
+                    case 503:
+                    case 523:
+                        return 100 + humidityFactor;
+                }
+                return 0;
+            }
+        }
+
     }
 
     [DataContract]
@@ -306,12 +335,20 @@ namespace weather_app.owm
         [DataMember(Name = "id")]
         public int Id { get; set; }
 
+        private string _name;
         [DataMember(Name = "name")]
-        public string Name { get; set; }
+        public string Name {
+            get {
+                return this._name;
+            }
+            set {
+                this._name = value;
+                this.CityName = value;
+            }
+        }
 
         [DataMember(Name = "cod")]
         public int Cod { get; set; }
-
     }
 
     [DataContract]

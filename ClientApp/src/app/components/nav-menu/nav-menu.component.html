@@ -1,0 +1,14 @@
+<mat-toolbar color="primary">
+  <span routerLink="" class="branding">
+    <img [src]="logo" /> {{title}}
+  </span>
+  <span class="spacer"></span>
+  <mat-button-toggle-group [(ngModel)]="unit" (change)="unitChange()">
+    <mat-button-toggle class="small" value="Celsius" aria-label="Celsius">
+      &deg;C
+    </mat-button-toggle>
+    <mat-button-toggle class="small" value="Farenheit" aria-label="Farenheit">
+      &deg;F
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+</mat-toolbar>

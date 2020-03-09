@@ -1,0 +1,7 @@
+<mat-tab-group>
+  <mat-tab *ngFor="let key of keys; index as i;"
+  label="{{key}}">
+    <app-weather-forecast [params]="values[i]">
+    </app-weather-forecast>
+  </mat-tab>
+</mat-tab-group>
