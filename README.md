@@ -52,9 +52,9 @@ dotnet run
 
 ## Screen shots
 
-![alt text](https://github.com/cabeuson/web-app/Screenshots/web-app-screenshot-1368x768.png "Web App 1368x768")
+![alt text](https://github.com/cabesuon/weather-app/blob/master/Screenshots/web-app-screenshot-1368x768.png "Web App 1368x768")
 
-![alt text](https://github.com/cabeuson/web-app/Screenshots/web-app-screenshot-320x570.png "Web App 1368x768")
+![alt text](https://github.com/cabesuon/weather-app/blob/master/Screenshots/web-app-screenshot-320x570.png "Web App 1368x768")
 
 ## Note
 
